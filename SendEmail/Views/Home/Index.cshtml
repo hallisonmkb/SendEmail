@@ -1,0 +1,52 @@
+﻿@model List<SendEmail.Models.ConhecimentoModels>
+
+@{
+    ViewBag.Title = "Avaliação de Candidatos";
+}
+
+@foreach (var conhecimento in Model)
+{
+    <script>
+    $(document).ready(function() {
+        $('#stars@(conhecimento.nome)').on('starrr:change', function (e, value) {
+            $('#span@(conhecimento.nome)').html(value);
+            $('#hidden@(conhecimento.nome)').val(value);
+            });
+    });
+    </script>
+}
+
+<div class="container">
+    <div class="col-md-5">
+        <div class="form-area">
+            <form name="formSubmit" id="formSubmit" role="form" data-toggle="validator" action='@Url.Action("Submit","Home")' class="form">
+                <div class="row">
+                    <h2>Temos vaga de desenvolvedor<br /><small>Avalie seu conhecimento de 0 a 10 clicando sobre as estrelas</small></h2>
+                </div>
+                <br />
+
+                <div class="row lead">
+                    <p>Nome</p>
+                    <input class="form-control" name="inputNome" id="inputNome" placeholder="Nome" type="text" required autofocus />
+                </div>
+
+                <div class="row lead">
+                    <p>Email</p>
+                    <input class="form-control" name="inputEmail" id="inputEmail" placeholder="Email" type="email" required autofocus />
+                </div>
+
+                @foreach (var conhecimento in Model)
+                {
+                    <div class="row lead">
+                        <p>@(conhecimento.descricao)</p>
+                        <div id="stars@(conhecimento.nome)" class="starrr" data-rating='@(conhecimento.nota)'></div>
+                        <h4>Você deu uma classificação de <span id="span@(conhecimento.nome)" name="span@(conhecimento.nome)">@(conhecimento.nota)</span> estrela(s)</h4>
+                        <input type="hidden" id="hidden@(conhecimento.nome)" name="hidden@(conhecimento.nome)" value="@(conhecimento.nota)" />
+                    </div>
+                }
+
+                <button type="submit" id="buttonSubmit" name="buttonSubmit" class="btn btn-lg btn-primary btn-block">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
